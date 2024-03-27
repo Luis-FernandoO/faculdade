@@ -1,0 +1,159 @@
+-- Criando uma tabela
+CREATE TABLE cadfun(
+    codfun integer not null primary key,
+    nome    varchar(100) not null,
+    dpto    char(2),
+    func    char (20),
+    salario decimal (10,2)
+);
+-- Inserindo os primeiros registros na tabela
+INSERT INTO cadfun
+            (codfun,nome,dpto,func,salario)
+        VALUES
+            (1,'Maria','RH','Gerente',2500);
+           
+INSERT INTO cadfun
+        VALUES
+            (2,'Jose','TI','Estagiário',750);
+--O registo a seguir não será inserido pois
+-- já existe um registro com codfun = 2
+INSERT INTO cadfun
+        VALUES
+            (3,'Antonio','MN','Gerente',2000);
+           
+--Primeira consulta aos dados armazenados na tabela
+SELECT * FROM cadfun;
+--Apenas o nome e a função
+SELECT nome,func FROM cadastro;
+--Inserindo mais um registro
+INSERT INTO cadfun
+        VALUES
+            (4,'Antonio','MN','Gerente',2000);
+--Todos os registros com o salários maior igual a 1000
+SELECT * FROM cadfun
+         WHERE salario >=1000;
+SELECT nome,dpto,salario FROM cadfun
+         WHERE salario >=1000;
+--Inserir 3 novos registros para o departamento de TI
+   -- 2 estagiarios
+   -- 1 analista
+select * from cadfun;
+
+INSERT INTO CADFUN VALUES
+		(5,'Carlos','TI','Estagiario',800),
+		(6,'Carmem','TI','Estagiario',1000),
+		(7,'Tadeu','TI','Analista',7000);
+--Consultas com where e order by
+SELECT * FROM CADFUN WHERE DPTO = 'TI';
+SELECT * FROM CADFUN WHERE DPTO = 'TI'
+		 ORDER BY NOME ASC;
+SELECT * FROM CADFUN WHERE DPTO = 'TI'
+		 ORDER BY NOME DESC;
+		 
+SELECT * FROM CADFUN WHERE DPTO = 'TI'
+		 ORDER BY SALARIO;
+		 
+SELECT * FROM CADFUN WHERE DPTO = 'TI'
+		 ORDER BY SALARIO DESC;
+
+SELECT * FROM CADFUN WHERE DPTO = 'TI' OR DPTO='RH'
+		 ORDER BY SALARIO DESC;
+
+--ADICIONAR MAIS UM REGISTRO
+INSERT INTO CADFUN VALUES
+		(8,'Clara','RH','Estagiario',800);
+select * from cadfun;
+
+SELECT * FROM CADFUN WHERE DPTO = 'TI' OR DPTO='RH'
+		 ORDER BY DPTO,NOME;	
+		 
+--ATUALIZAR UM REGISTRO DA TABELA
+UPDATE CADFUN SET SALARIO = 1000 WHERE CODFUN = 8;
+
+--ELIMINAR TODOS OS REGISTROS DA TABELA
+DELETE FROM CADFUN;
+--ELIMINAR O REGISTRO DO FUNCIONARIO JOSE
+DELETE FROM CADFUN WHERE CODFUN = 2;
+
+--ATUALIZAR O SALARIO DO FUNCIONARIO
+--CARLOS PARA 3500 E ANALISTA JR
+UPDATE CADFUN SET SALARIO=3500,FUNC='ANALISTA JR'
+	WHERE CODFUN = 5;
+--O DONO DA EMPRESA VAI ACRESCENTAR 10% DE AUMENTO NO
+--SALARIO DE TODOS OS FUNCIONARIOS.
+UPDATE CADFUN SET SALARIO=SALARIO*1.10;
+--APENAS PARA OS FUNCIONARIOS DE TI MAIS UM AUMENTO DE 2%
+UPDATE CADFUN SET SALARIO=SALARIO + (SALARIO*0.02)
+		WHERE DPTO='TI';
+
+--Aula 4 - Manipular a estrutura das tabelas
+--SQL
+	--DDL (DATA DEFINITION LANGUAGE)
+		--comandos: CREATE 
+		--			ALTER
+		--			DROP
+		--			RENAME
+		--			TRUNCATE
+	--DML (DATA MANIPULATIN LANGUAGE)
+		--comandos: SELECT
+		--          INSERT
+		--          UPDATE
+		--          DELETE
+
+--		
+SELECT * FROM cadfun;
+ALTER TABLE cadfun ADD admissao DATE;
+UPDATE cadfun SET admissao = '2010-02-15' WHERE CODFUN = 1;
+--ATUALIZAR TODOS OS REGISTROS
+UPDATE cadfun SET admissao = '2020-03-25' WHERE CODFUN = 2;
+UPDATE cadfun SET admissao = '2024-01-12' WHERE CODFUN = 3;
+UPDATE cadfun SET admissao = '2024-10-5' WHERE CODFUN = 4;
+UPDATE cadfun SET admissao = '2024-02-29' WHERE CODFUN = 5;
+UPDATE cadfun SET admissao = '2023-02-28' WHERE CODFUN = 6;
+SELECT *FROM CADFUN ORDER BY  CODFUN DESC;
+
+SELECT *FROM CADFUN ORDER BY  ADMISSAO DESC LIMIT 2;
+
+ALTER TABLE CADASTRO ADD COLUMN MES_ADMISSAO VARCHAR(100);
+
+UPDATE CADASTRO SET MES_ADMISSAO = 'SETEMBRO' WHERE CODFUN = 5;
+
+UPDATE CADFUN SET CFP='999.565.899-88' WHERE CODFUN=1;
+UPDATE CADFUN SET CFP='687.789.778-88' WHERE CODFUN=2;
+--AJUSTANDO O NOME DO CAMPO DE CFP PARA CPF
+ALTER TABLE cadfun RENAME COLUMN CFP TO CPF;
+
+--AJUSTAR O NOME DA TABELA CADFUN PARA CADASTRO
+ALTER TABLE cadfun RENAME TO cadastro;
+SELECT *FROM cadastro;
+
+--ADICIONAR UMA RESTRIÇÃO DE UNICIDADE NO CAMPO CPF
+ALTER TABLE cadastro ADD CONSTRAINT unique_cpf UNIQUE(CPF);
+UPDATE CADASTRO SET CPF='687.789.778-88' WHERE CODFUN=4;
+--REMOVER A RESTRIÇÃO 
+ALTER TABLE cadastro DROP CONSTRAINT unique_cpf;
+--MODIFICAR O TIPO DO CAMPO
+ALTER TABLE cadastro ALTER COLUMN CPF TYPE varchar(50);
+ALTER TABLE cadastro ALTER COLUMN CPF TYPE varchar(10);
+
+
+SELECT codfun,func,dpto FROM CADASTRO;
+
+SELECT * FROM CADASTRO WHERE dpto = 'TI' OR dpto = 'RH';
+
+SELECT * FROM CADASTRO;
+
+SELECT NOME,FUNC FROM CADASTRO ORDER BY FUNC DESC;
+
+SELECT * FROM CADASTRO WHERE mes_admissao = 'SETEMBRO';
+
+
+SELECT FUNC,NOME FROM CADASTRO ORDER BY FUNC, NOME DESC;
+
+SELECT * FROM CADASTRO ORDER BY ADMISSAO FETCH FIRST ROW ONLY;
+
+SELECT * FROM CADASTRO ORDER BY ADMISSAO DESC FETCH FIRST ROW ONLY;
+
+SELECT DPTO, SUM(SALARIO) FROM CADASTRO GROUP BY DPTO;
+
+
